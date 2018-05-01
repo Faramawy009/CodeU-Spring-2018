@@ -21,11 +21,6 @@
 </head>
 <body>
 <script>
-    function logMeOut(){
-        FB.logout(function (response){
-            document.getElementById("status").innerHTML = 'You\'re now logged out!';
-        })
-    }
     // This is called with the results from from FB.getLoginStatus().
     function statusChangeCallback(response) {
         console.log('statusChangeCallback');
@@ -136,8 +131,6 @@
   <br><br>
   <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
   </fb:login-button>
-  <fb:logout-button scope="public_profile,email" onlogin="logMeOut();">
-  </fb:logout-button>
   <div id="status">
   </div>
   <script type="text/javascript">
