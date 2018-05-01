@@ -3,6 +3,7 @@
 <head>
  <title>Register</title>
  <link rel="stylesheet" href="/css/main.css">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
  <style>
    label {
      display: inline-block;
@@ -39,6 +40,8 @@
      <br/><br/>
      <button type="submit">Submit</button>
    </form>
+     <a href="#" class="fa fa-facebook"></a>
+     <a href="#" class="fa fa-twitter"></a>
  </div>
 </body>
 </html>
