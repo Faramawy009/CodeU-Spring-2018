@@ -61,9 +61,9 @@
         //
         // These three cases are handled in the callback function.
 
-        FB.getLoginStatus(function(response) {
-            statusChangeCallback(response);
-        });
+        // FB.getLoginStatus(function(response) {
+        //     statusChangeCallback(response);
+        // });
     };
     // Load the SDK asynchronously
     (function(d, s, id) {
@@ -119,7 +119,8 @@
    <a href="/conversations">Conversations</a>
    <% if(request.getSession().getAttribute("user") != null){ %>
      <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
-   <% } else{ %>
+     <a href="/logout">Logout</a>
+     <% } else{ %>
      <a href="/login">Login</a>
      <a href="/register">Register</a>
    <% } %>
@@ -141,11 +142,11 @@
      <br/><br/>
      <button type="submit">Submit</button>
    </form>
-     <a href="#" class="fa fa-facebook"></a>
-     <a href="#" class="fa fa-twitter"></a>
+     <br><br>
+     <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+   </fb:login-button>
  </div>
 <br><br>
-<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-</fb:login-button>
+
 </body>
 </html>

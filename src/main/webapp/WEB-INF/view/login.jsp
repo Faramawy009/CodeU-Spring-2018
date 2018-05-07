@@ -69,9 +69,9 @@
         //
         // These three cases are handled in the callback function.
 
-        FB.getLoginStatus(function(response) {
-            statusChangeCallback(response);
-        });
+        // FB.getLoginStatus(function(response) {
+        //     statusChangeCallback(response);
+        // });
     };
     // Load the SDK asynchronously
     (function(d, s, id) {
@@ -133,7 +133,7 @@
   <a href="/conversations">Conversations</a>
   <% if(request.getSession().getAttribute("user") != null){ %>
   <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
-  <a href="/following">Following</a>
+  <a href="/logout">Logout</a>
   <% } else{ %>
   <a href="/login">Login</a>
   <a href="/register">Register</a>
