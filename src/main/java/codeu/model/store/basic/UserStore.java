@@ -85,6 +85,22 @@ public class UserStore {
   }
 
   /**
+   *  Access the User object with the given email
+   *
+   * @return null if email does not match any existing User.
+   */
+  public User getUserByEmail(String email) {
+    // This approach will be pretty slow if we have many users.
+    for (User user : users) {
+      if (user.getEmail().equals(email)) {
+        return user;
+      }
+    }
+    return null;
+  }
+
+
+  /**
    * Access the User object with the given UUID.
    *
    * @return null if the UUID does not match any existing User.

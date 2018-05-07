@@ -70,21 +70,39 @@ public class LoginServlet extends HttpServlet {
       throws IOException, ServletException {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
+    String loginTypeParam = request.getParameter("logintype");
+    String email = request.getParameter("email");
 
-    if (userStore.isUserRegistered(username)) {
-      User user = userStore.getUser(username);
-      if(BCrypt.checkpw(password, user.getPassword())) {
-        request.getSession().setAttribute("user", username);
-        response.sendRedirect("/conversations");
+    User.LoginType loginType = null;
+    try {
+      loginType = User.LoginType.valueOf(loginTypeParam);
+    } catch (Exception e) {
+      request.setAttribute("error", "Not a valid login method");
+//      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+//      return;
+    }
+    if (loginType == User.LoginType.Facebook) {
+      User user = userStore.getUserByEmail(email);
+      if (user == null) {
+        User newUser = new User(UUID.randomUUID(), username, "", Instant.now(), email, User.LoginType.Facebook);
+        userStore.addUser(newUser);
       }
-      else {
-        request.setAttribute("error", "Invalid password.");
+      request.getSession().setAttribute("user", username);
+      response.sendRedirect("/conversations");
+    } else {
+      if (userStore.isUserRegistered(username)) {
+        User user = userStore.getUser(username);
+        if (BCrypt.checkpw(password, user.getPassword())) {
+          request.getSession().setAttribute("user", username);
+          response.sendRedirect("/conversations");
+        } else {
+          request.setAttribute("error", "Invalid password.");
+          request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+        }
+      } else {
+        request.setAttribute("error", "That username was not found.");
         request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
       }
-    }
-    else {
-      request.setAttribute("error", "That username was not found.");
-      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
     }
   }
 }

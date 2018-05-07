@@ -19,10 +19,16 @@ import java.util.UUID;
 
 /** Class representing a registered user. */
 public class User {
+  public enum LoginType {
+    Register,
+    Facebook
+  }
   private final UUID id;
   private final String name;
   private final String password;
   private final Instant creation;
+  private final String email;
+  private final LoginType loginType;
 
   /**
    * Constructs a new User.
@@ -32,11 +38,13 @@ public class User {
    * @param password the password of this User
    * @param creation the creation time of this User
    */
-  public User(UUID id, String name, String password, Instant creation) {
+  public User(UUID id, String name, String password, Instant creation, String email, LoginType loginType) {
     this.id = id;
     this.name = name;
     this.password = password;
     this.creation = creation;
+    this.email = email;
+    this.loginType = loginType;
   }
 
   /**
@@ -65,5 +73,15 @@ public class User {
    */
   public String getPassword() {
     return password;
+  }
+  /**
+   * Returns the email of this User.
+   */
+  public String getEmail(){
+    return this.email;
+  }
+
+  public String getLoginType(){
+    return this.loginType.toString();
   }
 }

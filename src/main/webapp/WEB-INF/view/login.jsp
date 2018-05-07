@@ -90,18 +90,25 @@
             console.log('Successful login for: ' + response.name);
             var form = document.createElement("form");
             form.setAttribute("method", "POST");
-            form.setAttribute("action", "/fblogin");
+            form.setAttribute("action", "/login");
 
             var hiddenField1 = document.createElement("input");
             hiddenField1.setAttribute("type", "hidden");
             hiddenField1.setAttribute("name", "username");
             hiddenField1.setAttribute("value", response.name);
             form.appendChild(hiddenField1);
+
             var hiddenField2 = document.createElement("input");
             hiddenField2.setAttribute("type", "hidden");
             hiddenField2.setAttribute("name", "email");
             hiddenField2.setAttribute("value", response.email);
             form.appendChild(hiddenField2);
+
+            var hiddenField3 = document.createElement("input");
+            hiddenField3.setAttribute("type", "hidden");
+            hiddenField3.setAttribute("name", "logintype");
+            hiddenField3.setAttribute("value", "Facebook");
+            form.appendChild(hiddenField3);
 
             document.body.appendChild(form);
             form.submit();
@@ -148,6 +155,7 @@
     <label for="password">Password: </label>
     <input type="password" name="password" id="password">
     <br/><br/>
+    <input type="hidden" name="logintype" value="Register"/>
     <button type="submit">Login</button>
   </form>
   <br><br>
