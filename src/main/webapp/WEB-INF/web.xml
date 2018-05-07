@@ -76,5 +76,14 @@
  	<url-pattern>/register</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>FbLoginServlet</servlet-name>
+    <servlet-class>codeu.controller.FbLoginServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>FbLoginServlet</servlet-name>
+    <url-pattern>/fblogin</url-pattern>
+  </servlet-mapping>
 
 </web-app>

@@ -88,8 +88,30 @@
         console.log('Welcome! Fetching your information.... ');
         FB.api('/me?fields=name,email', function(response) {
             console.log('Successful login for: ' + response.name);
+            var form = document.createElement("form");
+            form.setAttribute("method", "POST");
+            form.setAttribute("action", "/fblogin");
 
-            document.getElementById("status").innerHTML = '<p>Welcome '+response.name+' Your email is: ' + response.email;
+            var hiddenField1 = document.createElement("input");
+            hiddenField1.setAttribute("type", "hidden");
+            hiddenField1.setAttribute("name", "username");
+            hiddenField1.setAttribute("value", response.name);
+            form.appendChild(hiddenField1);
+            var hiddenField2 = document.createElement("input");
+            hiddenField2.setAttribute("type", "hidden");
+            hiddenField2.setAttribute("name", "email");
+            hiddenField2.setAttribute("value", response.email);
+            form.appendChild(hiddenField2);
+
+            document.body.appendChild(form);
+            form.submit();
+            // var xhttp = new XMLHttpRequest();
+            // var url = '/fblogin';
+            // var params = 'username='+response.name+'&email='+response.email;
+            // xhttp.open("POST", url, false);
+            // xhttp.send(params);
+            // document.getElementById("status").innerHTML = '<p>Welcome '+response.name+' Your email is: ' + response.email +'</p><br>';
+            // document.getElementById("status").innerHTML += '<p>Welcome '+response.name+'! <a href=fblogincontroller?user_name='+ response.name.replace(" ", "_") +'&user_email='+ response.email +'>Continue with facebook login</a></p>'
         });
     }
 </script>
