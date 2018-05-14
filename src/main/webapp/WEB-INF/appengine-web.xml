@@ -16,7 +16,7 @@
 -->
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
     <application>team5codeuspring2018</application>
-    <version>abdo</version>
+    <version>m2test</version>
     <threadsafe>false</threadsafe>
     <sessions-enabled>true</sessions-enabled>
     <runtime>java8</runtime>
