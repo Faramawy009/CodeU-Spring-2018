@@ -165,47 +165,47 @@ public class PersistentDataStore {
   * DataStore service
   */
 
-  public List<Event> loadEvents() throws PersistentDataStoreException {
-    List<Event> events = new ArrayList<>();
-    Query query = new Query("m2-chat-events");
-    PreparedQuery results = datastore.prepare(query);
+	public List<Event> loadEvents() throws PersistentDataStoreException {
+		List<Event> events = new ArrayList<>();
+		Query query = new Query("m2-chat-events");
+		PreparedQuery results = datastore.prepare(query);
 
-    for (Entity entity: results.asIterable()) {
-      try {
-        // Loads in each variable
-        Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        String eventType = (String) entity.getProperty("event_type");
-        String userName = (String) entity.getProperty("username");
-        String userLink = (String) entity.getProperty("userlink");
-        String conversationName = (String) entity.getProperty("conversation-name");
-        String conversationLink = (String) entity.getProperty("conversation-link");
-        boolean inOrOut = (boolean) entity.getProperty("inOrOut");
-        // Depending on what type of event type it is; add different types of subclasses to event list.
-        if (eventType == "login-event") {
-          Event event = new LoginLogoutEvent(userName, userLink, creationTime, eventType, inOrOut);
-          events.add(event);
-        } 
-        else if (eventType == "conversation-event") {
-          Event event = new NewConversationEvent(creationTime, eventType, conversationName, conversationLink);
-          events.add(event);
-        }
-        else if (eventType == "register-event") {
-          Event event = new NewUserEvent(userName, userLink, creationTime, eventType);
-          events.add(event);
-        }
-        else if (eventType == "message-event") {
-          Event event = new NewMessageEvent(userName, userLink, creationTime, eventType, conversationName, conversationLink);
-          events.add(event);
-        } 
-      }catch (Exception e) {
-          // In a production environment, errors should be very rare. Errors which may
-          // occur include network errors, Datastore service errors, authorization errors,
-          // database entity definition mismatches, or service mismatches.
-          throw new PersistentDataStoreException(e);
-      }
-    }
-    return events;
-  }
+		for (Entity entity: results.asIterable()) {
+			try {
+				// Loads in each variable
+				Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+				String eventType = (String) entity.getProperty("event_type");
+				String userName = (String) entity.getProperty("username");
+				String userLink = (String) entity.getProperty("userlink");
+				String conversationName = (String) entity.getProperty("conversation-name");
+				String conversationLink = (String) entity.getProperty("conversation-link");
+				boolean inOrOut = (boolean) entity.getProperty("inOrOut");
+				// Depending on what type of event type it is; add different types of subclasses to event list.
+				if (eventType.equals("login-event")) {
+					Event event = new LoginLogoutEvent(userName, userLink, creationTime, eventType, inOrOut);
+					events.add(event);
+				}
+				else if (eventType.equals("conversation-event")) {
+					Event event = new NewConversationEvent(creationTime, eventType, conversationName, conversationLink);
+					events.add(event);
+				}
+				else if (eventType.equals("register-event")) {
+					Event event = new NewUserEvent(userName, userLink, creationTime, eventType);
+					events.add(event);
+				}
+				else if (eventType.equals("message-event")) {
+					Event event = new NewMessageEvent(userName, userLink, creationTime, eventType, conversationName, conversationLink);
+					events.add(event);
+				}
+			}catch (Exception e) {
+				// In a production environment, errors should be very rare. Errors which may
+				// occur include network errors, Datastore service errors, authorization errors,
+				// database entity definition mismatches, or service mismatches.
+				throw new PersistentDataStoreException(e);
+			}
+		}
+		return events;
+	}
 
   /**
    * Loads all Profile objects from the Datastore service and returns them in a List.
@@ -274,37 +274,39 @@ public class PersistentDataStore {
   }
   
   /** Writes an Event object to the DataStore service.*/
-  public void writeThrough(Event event) {
-    Entity eventEntity = new Entity("m2-chat-events");
-    eventEntity.setProperty("creation_time", event.getTimeStamp().toString());
-    eventEntity.setProperty("event_type", event.getEventType().toString());
+	public void writeThrough(Event event) {
+		Entity eventEntity = new Entity("m2-chat-events");
+		eventEntity.setProperty("creation_time", event.getTimeStamp().toString());
+		eventEntity.setProperty("event_type", event.getEventType().toString());
 
-    if (event.getEventType() == "login-event"){
-      LoginLogoutEvent tempEvent = (LoginLogoutEvent) event;
-      eventEntity.setProperty("username", tempEvent.getUserName().toString());
-      eventEntity.setProperty("inOrOut", tempEvent.isInOrOut());
-      eventEntity.setProperty("userlink", tempEvent.getUserLink().toString());
-    }
-    else if (event.getEventType() == "conversation-event") {
-      NewConversationEvent tempEvent = (NewConversationEvent) event;
-      eventEntity.setProperty("conversation-name", tempEvent.getConversationName().toString());
-      eventEntity.setProperty("conversation-link", tempEvent.getConversationLink().toString());
-    }
-    else if (event.getEventType() == "register-event") {
-      NewUserEvent tempEvent = (NewUserEvent) event;
-      eventEntity.setProperty("username", tempEvent.getUserName().toString());
-      eventEntity.setProperty("userlink", tempEvent.getUserLink().toString());
-    }
-    else if (event.getEventType() == "message-event") {
-      NewMessageEvent tempEvent = (NewMessageEvent) event;
-      eventEntity.setProperty("username", tempEvent.getUserName().toString());
-      eventEntity.setProperty("userlink", tempEvent.getUserLink().toString());
-      eventEntity.setProperty("conversation-name", tempEvent.getConversationName().toString());
-      eventEntity.setProperty("conversation-link", tempEvent.getConversationLink().toString());
-    }
-  }
+		if (event.getEventType().equals("login-event")){
+			LoginLogoutEvent tempEvent = (LoginLogoutEvent) event;
+			eventEntity.setProperty("username", tempEvent.getUserName().toString());
+			eventEntity.setProperty("inOrOut", tempEvent.isInOrOut());
+			eventEntity.setProperty("userlink", tempEvent.getUserLink().toString());
+		}
+		else if (event.getEventType().equals("conversation-event")) {
+			NewConversationEvent tempEvent = (NewConversationEvent) event;
+			eventEntity.setProperty("conversation-name", tempEvent.getConversationName().toString());
+			eventEntity.setProperty("conversation-link", tempEvent.getConversationLink().toString());
+		}
+		else if (event.getEventType().equals("register-event")) {
+			NewUserEvent tempEvent = (NewUserEvent) event;
+			eventEntity.setProperty("username", tempEvent.getUserName().toString());
+			eventEntity.setProperty("userlink", tempEvent.getUserLink().toString());
+		}
+		else if (event.getEventType().equals("message-event")) {
+			NewMessageEvent tempEvent = (NewMessageEvent) event;
+			eventEntity.setProperty("username", tempEvent.getUserName().toString());
+			eventEntity.setProperty("userlink", tempEvent.getUserLink().toString());
+			eventEntity.setProperty("conversation-name", tempEvent.getConversationName().toString());
+			eventEntity.setProperty("conversation-link", tempEvent.getConversationLink().toString());
+		}
+		datastore.put(eventEntity);
+	}
 
-  /** Write a Profile object to the Datastore service. */
+
+	/** Write a Profile object to the Datastore service. */
   public void writeThrough(Profile profile) {
     // Delete profile in entity if already present
     Filter idFilter = new FilterPredicate("uuid", FilterOperator.EQUAL, profile.getId().toString());
