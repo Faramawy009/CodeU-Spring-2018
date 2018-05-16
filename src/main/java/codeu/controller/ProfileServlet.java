@@ -77,10 +77,11 @@ public class ProfileServlet extends HttpServlet {
     if (profile == null) {
       // couldn't find profile, redirect to homepage
       System.out.println("Profile was null: " + username);
-      String msg = "The user " + username + "was not found in the following list of profiles: ";
-      for(Profile p: profileStore.getProfiles()) {
-        msg += "Name: " + p.getName() + "Id: " + p.getId();
-      }
+//      String msg = "The user " + username + "was not found in the following list of profiles: ";
+//      for(Profile p: profileStore.getProfiles()) {
+//        msg += "Name: " + p.getName() + "Id: " + p.getId();
+//      }
+      String msg = "The user " + username + "was not found in the list of profiles: ";
       request.setAttribute("error", msg);
       request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
       return;
