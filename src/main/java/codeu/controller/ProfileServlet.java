@@ -70,14 +70,19 @@ public class ProfileServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
     String requestUrl = request.getRequestURI();
-    String username = requestUrl.substring("/user/".length());
+    String username = requestUrl.substring("/user/".length()).replaceAll("%20"," ");
     User user = userStore.getUser(username);
 
     Profile profile = profileStore.getProfile(username);
     if (profile == null) {
       // couldn't find profile, redirect to homepage
       System.out.println("Profile was null: " + username);
-      response.sendRedirect("/index.jsp");
+      String msg = "The user " + username + "was not found in the following list of profiles: ";
+      for(Profile p: profileStore.getProfiles()) {
+        msg += "Name: " + p.getName() + "Id: " + p.getId();
+      }
+      request.setAttribute("error", msg);
+      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
       return;
     }
     List<Message> messages = messageStore.getUserMessages(user.getId());
@@ -97,7 +102,7 @@ public class ProfileServlet extends HttpServlet {
       throws IOException, ServletException {
 
     String requestUrl = request.getRequestURI();
-    String username = requestUrl.substring("/user/".length());
+    String username = requestUrl.substring("/user/".length()).replaceAll("%20"," ");
     User user = userStore.getUser(username);
 
     Profile profile = profileStore.getProfile(username);

@@ -93,7 +93,7 @@ public class RegisterServlet extends HttpServlet {
     }
 
     /** Adds user to the userStore database. */
-    User user = new User(UUID.randomUUID(), username, passwordHash, Instant.now(), "");
+    User user = new User(UUID.randomUUID(), username, passwordHash, Instant.now(), "", "", User.LoginType.Register);
     userStore.addUser(user);
 
     /** Adds profile to the profileStore database. Then redirects the user to page. */

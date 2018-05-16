@@ -111,6 +111,21 @@ public class UserStore {
     return null;
   }
 
+  /**
+   *  Access the User object with the given email
+   *
+   * @return null if email does not match any existing User.
+   */
+  public User getUserByEmail(String email) {
+    // This approach will be pretty slow if we have many users.
+    for (User user : users) {
+      if (user.getEmail().equals(email)) {
+        return user;
+      }
+    }
+    return null;
+  }
+
   /** Add a new user to the current set of users known to the application. */
   public void addUser(User user) {
     boolean userExists = false;

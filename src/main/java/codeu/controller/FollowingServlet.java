@@ -120,8 +120,13 @@ public class FollowingServlet extends HttpServlet {
 			else {
       	newFollowingList = user.getFollowingUsersString() + "," + followUser;
       }
-
-      User newUser = new User(user.getId(), user.getName(), user.getPassword(), user.getCreationTime(), newFollowingList);
+      User.LoginType loginType = null;
+			try {
+				loginType = User.LoginType.valueOf(user.getLoginType());
+			} catch (Exception e) {
+				request.setAttribute("error", "Not a valid login method");
+			}
+      User newUser = new User(user.getId(), user.getName(), user.getPassword(), user.getCreationTime(), newFollowingList, user.getEmail(), loginType);
       userStore.addUser(newUser);
       response.sendRedirect("/following");
     }

@@ -68,7 +68,7 @@ public class PersistentDataStore {
     List<User> users = new ArrayList<>();
 
     // Retrieve all users from the datastore.
-    Query query = new Query("m2-chat-users");
+    Query query = new Query("abdo-chat-users").addSort("creation_time", Query.SortDirection.ASCENDING);
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
@@ -78,7 +78,10 @@ public class PersistentDataStore {
         String password = (String)entity.getProperty("password");
         Instant creationTime = Instant.parse((String)entity.getProperty("creation_time"));
         String following = (String)entity.getProperty("following");
-        User user = new User(uuid, userName, password, creationTime, following);
+				String email = (String)entity.getProperty("email");
+				String loginType = (String) entity.getProperty("logintype");
+				User.LoginType loginTypee = User.LoginType.valueOf(loginType);
+				User user = new User(uuid, userName, password, creationTime, following, email, loginTypee);
 
         users.add(user);
       } catch (Exception e) {
@@ -103,7 +106,7 @@ public class PersistentDataStore {
     List<Conversation> conversations = new ArrayList<>();
 
     // Retrieve all conversations from the datastore.
-    Query query = new Query("m2-chat-conversations");
+    Query query = new Query("abdo-chat-conversations");
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
@@ -136,7 +139,7 @@ public class PersistentDataStore {
     List<Message> messages = new ArrayList<>();
 
     // Retrieve all messages from the datastore.
-    Query query = new Query("m2-chat-messages");
+    Query query = new Query("abdo-chat-messages");
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
@@ -167,7 +170,7 @@ public class PersistentDataStore {
 
 	public List<Event> loadEvents() throws PersistentDataStoreException {
 		List<Event> events = new ArrayList<>();
-		Query query = new Query("m2-chat-events");
+		Query query = new Query("abdo-chat-events");
 		PreparedQuery results = datastore.prepare(query);
 
 		for (Entity entity: results.asIterable()) {
@@ -218,7 +221,7 @@ public class PersistentDataStore {
     List<Profile> profiles = new ArrayList<>();
 
     // Retrieve all profiles from the datastore.
-    Query query = new Query("m2-chat-profiles");
+    Query query = new Query("abdo-chat-profiles");
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
@@ -243,18 +246,20 @@ public class PersistentDataStore {
 
   /** Write a User object to the Datastore service. */
   public void writeThrough(User user) {
-    Entity userEntity = new Entity("m2-chat-users");
+    Entity userEntity = new Entity("abdo-chat-users", user.getId().toString());
     userEntity.setProperty("uuid", user.getId().toString());
     userEntity.setProperty("username", user.getName());
     userEntity.setProperty("password", user.getPassword());
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
     userEntity.setProperty("following", user.getFollowingUsersString());
+		userEntity.setProperty("email", user.getEmail());
+		userEntity.setProperty("logintype", user.getLoginType());
     datastore.put(userEntity);
   }
 
   /** Write a Message object to the Datastore service. */
   public void writeThrough(Message message) {
-    Entity messageEntity = new Entity("m2-chat-messages");
+    Entity messageEntity = new Entity("abdo-chat-messages");
     messageEntity.setProperty("uuid", message.getId().toString());
     messageEntity.setProperty("conv_uuid", message.getConversationId().toString());
     messageEntity.setProperty("author_uuid", message.getAuthorId().toString());
@@ -265,7 +270,7 @@ public class PersistentDataStore {
 
   /** Write a Conversation object to the Datastore service. */
   public void writeThrough(Conversation conversation) {
-    Entity conversationEntity = new Entity("m2-chat-conversations");
+    Entity conversationEntity = new Entity("abdo-chat-conversations");
     conversationEntity.setProperty("uuid", conversation.getId().toString());
     conversationEntity.setProperty("owner_uuid", conversation.getOwnerId().toString());
     conversationEntity.setProperty("title", conversation.getTitle());
@@ -275,7 +280,7 @@ public class PersistentDataStore {
   
   /** Writes an Event object to the DataStore service.*/
 	public void writeThrough(Event event) {
-		Entity eventEntity = new Entity("m2-chat-events");
+		Entity eventEntity = new Entity("abdo-chat-events");
 		eventEntity.setProperty("creation_time", event.getTimeStamp().toString());
 		eventEntity.setProperty("event_type", event.getEventType().toString());
 
@@ -310,12 +315,12 @@ public class PersistentDataStore {
   public void writeThrough(Profile profile) {
     // Delete profile in entity if already present
     Filter idFilter = new FilterPredicate("uuid", FilterOperator.EQUAL, profile.getId().toString());
-    Query query = new Query("m2-chat-profiles").setFilter(idFilter);
+    Query query = new Query("abdo-chat-profiles").setFilter(idFilter);
     PreparedQuery results = datastore.prepare(query);
     for (Entity entity : results.asIterable()) {
       datastore.delete(entity.getKey());
     }
-    Entity profileEntity = new Entity("m2-chat-profiles", profile.getId().toString());
+    Entity profileEntity = new Entity("abdo-chat-profiles", profile.getId().toString());
     profileEntity.setProperty("uuid", profile.getId().toString());
     profileEntity.setProperty("creation_time", profile.getCreationTime().toString());
     profileEntity.setProperty("about", profile.getAbout());

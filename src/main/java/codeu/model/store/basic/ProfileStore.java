@@ -119,6 +119,9 @@ public class ProfileStore {
     return false;
   }
 
+  public List<Profile> getProfiles() {
+    return this.profiles;
+  }
   /**
    * Sets the List of Profiles stored by this ProfileStore. This should only be called once, when
    * the data is loaded from Datastore.
