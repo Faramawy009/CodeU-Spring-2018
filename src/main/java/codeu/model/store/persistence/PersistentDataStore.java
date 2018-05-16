@@ -106,7 +106,7 @@ public class PersistentDataStore {
     List<Conversation> conversations = new ArrayList<>();
 
     // Retrieve all conversations from the datastore.
-    Query query = new Query("abdo-chat-conversations");
+    Query query = new Query("abdo-chat-conversations").addSort("creation_time", Query.SortDirection.ASCENDING);
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
@@ -139,7 +139,7 @@ public class PersistentDataStore {
     List<Message> messages = new ArrayList<>();
 
     // Retrieve all messages from the datastore.
-    Query query = new Query("abdo-chat-messages");
+    Query query = new Query("abdo-chat-messages").addSort("creation_time", Query.SortDirection.ASCENDING);
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
@@ -170,7 +170,7 @@ public class PersistentDataStore {
 
 	public List<Event> loadEvents() throws PersistentDataStoreException {
 		List<Event> events = new ArrayList<>();
-		Query query = new Query("abdo-chat-events");
+		Query query = new Query("abdo-chat-events").addSort("creation_time", Query.SortDirection.ASCENDING);
 		PreparedQuery results = datastore.prepare(query);
 
 		for (Entity entity: results.asIterable()) {
@@ -221,7 +221,7 @@ public class PersistentDataStore {
     List<Profile> profiles = new ArrayList<>();
 
     // Retrieve all profiles from the datastore.
-    Query query = new Query("abdo-chat-profiles");
+    Query query = new Query("abdo-chat-profiles").addSort("creation_time", Query.SortDirection.ASCENDING);
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
