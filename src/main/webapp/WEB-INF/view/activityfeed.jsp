@@ -72,7 +72,13 @@ List <Event> events = (List<Event>) request.getAttribute("events");
   			%>
   		</ul>
   	</div>
-  </div>
+	<% if(request.getSession().getAttribute("user") != null){ %>
+	<form action="/privateactivityfeed" method="POST">
+		<button type="submit">Private Activity Feed</button>
+	</form>
+	<% } %>
+
+	</div>
 </body>
 </html>
 

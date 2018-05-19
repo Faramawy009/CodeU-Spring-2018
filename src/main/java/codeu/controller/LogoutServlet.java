@@ -14,7 +14,14 @@
 
 package codeu.controller;
 
+import codeu.model.data.Event;
+import codeu.model.data.LoginLogoutEvent;
+import codeu.model.store.basic.EventStore;
+import codeu.model.store.basic.ProfileStore;
+import codeu.model.store.basic.UserStore;
+
 import java.io.IOException;
+import java.time.Instant;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,10 +30,34 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet class responsible for the login page. */
 public class LogoutServlet extends HttpServlet {
 
+	/** Store class that gives access to Events. */
+	private EventStore eventStore;
+
+	/**
+	 * Set up state for handling login-related requests. This method is only called when running in a
+	 * server, not when running in a test.
+	 */
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		setEventStore(EventStore.getInstance());
+	}
+
+	/**
+	 * Sets the EventStore used by this servlet. This function provides a common setup method for use
+	 * by the test framework or the servlet's init() function.
+	 */
+	void setEventStore(EventStore eventStore) {
+		this.eventStore = eventStore;
+	}
+
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 					throws IOException, ServletException {
+		String username = (String)request.getSession().getAttribute("user");
 		request.getSession().removeAttribute("user");
+		Event event = new LoginLogoutEvent(username, "placeholderLink", Instant.now(), "login-event", false);
+		eventStore.addEvent(event);
 		request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
 	}
 }

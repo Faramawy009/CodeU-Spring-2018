@@ -178,25 +178,33 @@ public class PersistentDataStore {
 				// Loads in each variable
 				Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
 				String eventType = (String) entity.getProperty("event_type");
-				String userName = (String) entity.getProperty("username");
-				String userLink = (String) entity.getProperty("userlink");
-				String conversationName = (String) entity.getProperty("conversation-name");
-				String conversationLink = (String) entity.getProperty("conversation-link");
-				boolean inOrOut = (boolean) entity.getProperty("inOrOut");
+
 				// Depending on what type of event type it is; add different types of subclasses to event list.
 				if (eventType.equals("login-event")) {
+					boolean inOrOut = (boolean) entity.getProperty("inOrOut");
+					String userName = (String) entity.getProperty("username");
+					String userLink = (String) entity.getProperty("userlink");
 					Event event = new LoginLogoutEvent(userName, userLink, creationTime, eventType, inOrOut);
 					events.add(event);
 				}
 				else if (eventType.equals("conversation-event")) {
+					String conversationName = (String) entity.getProperty("conversation-name");
+					String conversationLink = (String) entity.getProperty("conversation-link");
+
 					Event event = new NewConversationEvent(creationTime, eventType, conversationName, conversationLink);
 					events.add(event);
 				}
 				else if (eventType.equals("register-event")) {
+					String userName = (String) entity.getProperty("username");
+					String userLink = (String) entity.getProperty("userlink");
 					Event event = new NewUserEvent(userName, userLink, creationTime, eventType);
 					events.add(event);
 				}
 				else if (eventType.equals("message-event")) {
+					String conversationName = (String) entity.getProperty("conversation-name");
+					String conversationLink = (String) entity.getProperty("conversation-link");
+					String userName = (String) entity.getProperty("username");
+					String userLink = (String) entity.getProperty("userlink");
 					Event event = new NewMessageEvent(userName, userLink, creationTime, eventType, conversationName, conversationLink);
 					events.add(event);
 				}
