@@ -14,8 +14,7 @@
   limitations under the License.
 --%>
 <%@ page import="java.util.List" %>
-<%@ page import="codeu.model.data.User" %>
-<%@ page import="java.util.ArrayList" %>
+
 
 <!DOCTYPE html>
 <html>

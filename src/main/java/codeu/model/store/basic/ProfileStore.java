@@ -89,15 +89,6 @@ public class ProfileStore {
   public void addProfile(Profile profile) {
     // Replaces current profile if present
     UUID id = profile.getId();
-    //        Profile oldProfile = null;
-    //        for (Profile curProfile : profiles) {
-    //            if (curProfile.getId().equals(id)) {
-    //                oldProfile = curProfile;
-    //            }
-    //        }
-    //        if(oldProfile != null){
-    //            profiles.remove(oldProfile);
-    //        }
     for (Profile curProfile : profiles) {
       if (curProfile.getId().equals(id)) {
         curProfile = profile;

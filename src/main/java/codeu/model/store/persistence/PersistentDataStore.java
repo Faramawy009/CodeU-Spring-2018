@@ -161,7 +161,7 @@ public class PersistentDataStore {
 
     return messages;
   }
-  /*
+  /**
   * Loads all Event objects from the DataStore service and returns them in a List.
   *
   * @throws PersistentDataStoreException if an error was detected during the load from the

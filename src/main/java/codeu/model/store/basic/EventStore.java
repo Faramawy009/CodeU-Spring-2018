@@ -5,8 +5,6 @@ import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
-
 
 public class EventStore {
 	/** Singleton instance of EventStore. */
@@ -34,7 +32,7 @@ public class EventStore {
 	/**
 	* Instance getter function used for tests. Supply a mock for PersistentStorageAgent.
 	*
-	* @param persistenStorageAgent is mock used for testing
+	* @param persistentStorageAgent is mock used for testing
 	*/
 
 	public static EventStore getTestInstance(PersistentStorageAgent persistentStorageAgent) {

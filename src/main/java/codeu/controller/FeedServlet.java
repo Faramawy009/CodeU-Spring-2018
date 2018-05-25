@@ -3,7 +3,6 @@ package codeu.controller;
 
 import codeu.model.data.Event;
 import java.util.List;
-import java.util.ArrayList;
 import codeu.model.store.basic.EventStore;
 import java.io.IOException;
 import javax.servlet.ServletException;

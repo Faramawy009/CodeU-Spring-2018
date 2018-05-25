@@ -6,20 +6,16 @@ import codeu.model.data.Profile;
 import codeu.model.data.Message;
 import codeu.model.store.basic.ProfileStore;
 import codeu.model.store.basic.MessageStore;
-import codeu.model.store.basic.UserStore;
-import org.mindrot.jbcrypt.BCrypt;
+
 
 import java.util.List;
-import java.time.Instant;
-import java.util.UUID;
+
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
-import java.io.File;
+
 
 /** Servlet class responsible for user registration. */
 public class ProfileServlet extends HttpServlet {

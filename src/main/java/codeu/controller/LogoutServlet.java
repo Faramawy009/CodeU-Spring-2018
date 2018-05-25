@@ -17,8 +17,6 @@ package codeu.controller;
 import codeu.model.data.Event;
 import codeu.model.data.LoginLogoutEvent;
 import codeu.model.store.basic.EventStore;
-import codeu.model.store.basic.ProfileStore;
-import codeu.model.store.basic.UserStore;
 
 import java.io.IOException;
 import java.time.Instant;

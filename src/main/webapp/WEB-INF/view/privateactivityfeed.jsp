@@ -1,15 +1,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="codeu.model.data.Event" %>
-<%@ page import="codeu.model.data.NewConversationEvent" %>
 <%@ page import="codeu.model.data.LoginLogoutEvent" %>
-<%@ page import="codeu.model.data.NewUserEvent" %>
 <%@ page import="codeu.model.data.NewMessageEvent" %>
-<%@ page import="codeu.model.data.Conversation" %>
-<%@ page import="codeu.model.data.Message" %>
 <%@ page import="codeu.model.data.User" %>
-<%@ page import="codeu.model.store.basic.EventStore" %>
-<%@ page import="codeu.model.store.basic.MessageStore" %>
-<%@ page import="codeu.model.store.basic.ConversationStore" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
 
 
@@ -24,7 +17,7 @@ List <Event> events = (List<Event>) request.getAttribute("events");
 	<title> Private Activity Feed</title>
 	<link rel="stylesheet" href="/css/main.css">
 	<style>
-		#activityfeed {
+		#privateactivityfeed {
       background-color: white;
 			height: 500px;
 			overflow-y:scroll;

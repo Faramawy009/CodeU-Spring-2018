@@ -22,7 +22,6 @@ import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.io.IOError;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;

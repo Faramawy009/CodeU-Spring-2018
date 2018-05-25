@@ -17,15 +17,8 @@
 <%@ page import="codeu.model.data.User" %>
 <%@ page import="codeu.model.data.Profile" %>
 <%@ page import="codeu.model.data.Message" %>
-<%@ page import="codeu.model.store.basic.ProfileStore" %>
 <%@ page import="codeu.model.store.basic.ConversationStore" %>
-<%@ page import="java.time.Instant" %>
-<%@ page import="java.util.UUID" %>
-<%@ page import="javax.swing.*" %>
-<%@ page import="javax.imageio.*" %>
-<%@ page import="java.awt.*" %>
-<%@ page import="java.awt.event.*" %>
-<%@ page import="java.awt.image.*" %>
+
 
 <%
 User user = (User) request.getAttribute("profileUser");
@@ -86,22 +79,6 @@ Profile profile = (Profile) request.getAttribute("profile");
                     <%= (String) request.getAttribute("about")%>
                   </p>
         <% } %>
-      <%--
-      <% if(request.getAttribute("photo") != null){
-         JFrame f = new JFrame("Load Image Sample");
-
-                 f.addWindowListener(new WindowAdapter(){
-                         public void windowClosing(WindowEvent e) {
-                             System.exit(0);
-                         }
-                     });
-
-                 f.add((BufferedImage) request.getAttribute("photo"));
-                 f.pack();
-                 f.setVisible(true);
-      } %>
-      <p><%= request.getAttribute("photo")%></p>
-      --%>
 
     <h3>Message History</h3>
 
