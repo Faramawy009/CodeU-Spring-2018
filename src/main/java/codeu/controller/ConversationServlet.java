@@ -15,12 +15,12 @@
 package codeu.controller;
 
 import codeu.model.data.Conversation;
-import codeu.model.data.User;
 import codeu.model.data.Event;
 import codeu.model.data.NewConversationEvent;
+import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
-import codeu.model.store.basic.UserStore;
 import codeu.model.store.basic.EventStore;
+import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
@@ -71,8 +71,8 @@ public class ConversationServlet extends HttpServlet {
   }
 
   /**
-   * Sets the EventStore used by this servlet. This function provides a common setup method
-   * for use by the test framework or the servlet's init() function.
+   * Sets the EventStore used by this servlet. This function provides a common setup method for use
+   * by the test framework or the servlet's init() function.
    */
   void setEventStore(EventStore eventStore) {
     this.eventStore = eventStore;
@@ -132,7 +132,9 @@ public class ConversationServlet extends HttpServlet {
         new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now());
 
     conversationStore.addConversation(conversation);
-    Event event = new NewConversationEvent(Instant.now(), "conversation-event", conversationTitle, "placeholder-link");
+    Event event =
+        new NewConversationEvent(
+            Instant.now(), "conversation-event", conversationTitle, "placeholder-link");
     eventStore.addEvent(event);
     response.sendRedirect("/chat/" + conversationTitle);
   }

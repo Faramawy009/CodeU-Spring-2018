@@ -15,14 +15,14 @@
 package codeu.controller;
 
 import codeu.model.data.Conversation;
-import codeu.model.data.Message;
-import codeu.model.data.User;
 import codeu.model.data.Event;
+import codeu.model.data.Message;
 import codeu.model.data.NewMessageEvent;
+import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
+import codeu.model.store.basic.EventStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
-import codeu.model.store.basic.EventStore;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
@@ -167,7 +167,14 @@ public class ChatServlet extends HttpServlet {
             Instant.now());
 
     messageStore.addMessage(message);
-    Event event = new NewMessageEvent(username, "placeholder-link", Instant.now(), "message-event", conversationTitle, "placeholder-link");
+    Event event =
+        new NewMessageEvent(
+            username,
+            "placeholder-link",
+            Instant.now(),
+            "message-event",
+            conversationTitle,
+            "placeholder-link");
     eventStore.addEvent(event);
     // redirect to a GET request
     response.sendRedirect("/chat/" + conversationTitle);

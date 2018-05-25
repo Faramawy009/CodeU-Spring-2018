@@ -15,28 +15,27 @@
 package codeu.model.store.persistence;
 
 import codeu.model.data.Conversation;
-import codeu.model.data.Message;
-import codeu.model.data.User;
 import codeu.model.data.Event;
 import codeu.model.data.LoginLogoutEvent;
+import codeu.model.data.Message;
 import codeu.model.data.NewConversationEvent;
 import codeu.model.data.NewMessageEvent;
 import codeu.model.data.NewUserEvent;
 import codeu.model.data.Profile;
-import codeu.model.store.persistence.PersistentDataStoreException;
+import codeu.model.data.User;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.Filter;
-import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
+import java.awt.image.BufferedImage;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.awt.image.BufferedImage;
 
 /**
  * This class handles all interactions with Google App Engine's Datastore service. On startup it
@@ -60,28 +59,29 @@ public class PersistentDataStore {
   /**
    * Loads all User objects from the Datastore service and returns them in a List.
    *
-   * @throws PersistentDataStoreException if an error was detected during the load from the
-   *     Datastore service
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
+   *     during the load from the Datastore service
    */
   public List<User> loadUsers() throws PersistentDataStoreException {
 
     List<User> users = new ArrayList<>();
 
     // Retrieve all users from the datastore.
-    Query query = new Query("abdo-chat-users").addSort("creation_time", Query.SortDirection.ASCENDING);
+    Query query =
+        new Query("abdo-chat-users").addSort("creation_time", Query.SortDirection.ASCENDING);
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
       try {
-        UUID uuid = UUID.fromString((String)entity.getProperty("uuid"));
-        String userName = (String)entity.getProperty("username");
-        String password = (String)entity.getProperty("password");
-        Instant creationTime = Instant.parse((String)entity.getProperty("creation_time"));
-        String following = (String)entity.getProperty("following");
-				String email = (String)entity.getProperty("email");
-				String loginType = (String) entity.getProperty("logintype");
-				User.LoginType loginTypee = User.LoginType.valueOf(loginType);
-				User user = new User(uuid, userName, password, creationTime, following, email, loginTypee);
+        UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
+        String userName = (String) entity.getProperty("username");
+        String password = (String) entity.getProperty("password");
+        Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+        String following = (String) entity.getProperty("following");
+        String email = (String) entity.getProperty("email");
+        String loginType = (String) entity.getProperty("logintype");
+        User.LoginType loginTypee = User.LoginType.valueOf(loginType);
+        User user = new User(uuid, userName, password, creationTime, following, email, loginTypee);
 
         users.add(user);
       } catch (Exception e) {
@@ -98,15 +98,17 @@ public class PersistentDataStore {
   /**
    * Loads all Conversation objects from the Datastore service and returns them in a List.
    *
-   * @throws PersistentDataStoreException if an error was detected during the load from the
-   *     Datastore service
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
+   *     during the load from the Datastore service
    */
   public List<Conversation> loadConversations() throws PersistentDataStoreException {
 
     List<Conversation> conversations = new ArrayList<>();
 
     // Retrieve all conversations from the datastore.
-    Query query = new Query("abdo-chat-conversations").addSort("creation_time", Query.SortDirection.ASCENDING);
+    Query query =
+        new Query("abdo-chat-conversations")
+            .addSort("creation_time", Query.SortDirection.ASCENDING);
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
@@ -131,15 +133,16 @@ public class PersistentDataStore {
   /**
    * Loads all Message objects from the Datastore service and returns them in a List.
    *
-   * @throws PersistentDataStoreException if an error was detected during the load from the
-   *     Datastore service
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
+   *     during the load from the Datastore service
    */
   public List<Message> loadMessages() throws PersistentDataStoreException {
 
     List<Message> messages = new ArrayList<>();
 
     // Retrieve all messages from the datastore.
-    Query query = new Query("abdo-chat-messages").addSort("creation_time", Query.SortDirection.ASCENDING);
+    Query query =
+        new Query("abdo-chat-messages").addSort("creation_time", Query.SortDirection.ASCENDING);
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
@@ -162,74 +165,76 @@ public class PersistentDataStore {
     return messages;
   }
   /**
-  * Loads all Event objects from the DataStore service and returns them in a List.
-  *
-  * @throws PersistentDataStoreException if an error was detected during the load from the
-  * DataStore service
-  */
+   * Loads all Event objects from the DataStore service and returns them in a List.
+   *
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
+   *     during the load from the DataStore service
+   */
+  public List<Event> loadEvents() throws PersistentDataStoreException {
+    List<Event> events = new ArrayList<>();
+    Query query =
+        new Query("abdo-chat-events").addSort("creation_time", Query.SortDirection.ASCENDING);
+    PreparedQuery results = datastore.prepare(query);
 
-	public List<Event> loadEvents() throws PersistentDataStoreException {
-		List<Event> events = new ArrayList<>();
-		Query query = new Query("abdo-chat-events").addSort("creation_time", Query.SortDirection.ASCENDING);
-		PreparedQuery results = datastore.prepare(query);
+    for (Entity entity : results.asIterable()) {
+      try {
+        // Loads in each variable
+        Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+        String eventType = (String) entity.getProperty("event_type");
 
-		for (Entity entity: results.asIterable()) {
-			try {
-				// Loads in each variable
-				Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-				String eventType = (String) entity.getProperty("event_type");
+        // Depending on what type of event type it is; add different types of subclasses to event
+        // list.
+        if (eventType.equals("login-event")) {
+          boolean inOrOut = (boolean) entity.getProperty("inOrOut");
+          String userName = (String) entity.getProperty("username");
+          String userLink = (String) entity.getProperty("userlink");
+          Event event = new LoginLogoutEvent(userName, userLink, creationTime, eventType, inOrOut);
+          events.add(event);
+        } else if (eventType.equals("conversation-event")) {
+          String conversationName = (String) entity.getProperty("conversation-name");
+          String conversationLink = (String) entity.getProperty("conversation-link");
 
-				// Depending on what type of event type it is; add different types of subclasses to event list.
-				if (eventType.equals("login-event")) {
-					boolean inOrOut = (boolean) entity.getProperty("inOrOut");
-					String userName = (String) entity.getProperty("username");
-					String userLink = (String) entity.getProperty("userlink");
-					Event event = new LoginLogoutEvent(userName, userLink, creationTime, eventType, inOrOut);
-					events.add(event);
-				}
-				else if (eventType.equals("conversation-event")) {
-					String conversationName = (String) entity.getProperty("conversation-name");
-					String conversationLink = (String) entity.getProperty("conversation-link");
-
-					Event event = new NewConversationEvent(creationTime, eventType, conversationName, conversationLink);
-					events.add(event);
-				}
-				else if (eventType.equals("register-event")) {
-					String userName = (String) entity.getProperty("username");
-					String userLink = (String) entity.getProperty("userlink");
-					Event event = new NewUserEvent(userName, userLink, creationTime, eventType);
-					events.add(event);
-				}
-				else if (eventType.equals("message-event")) {
-					String conversationName = (String) entity.getProperty("conversation-name");
-					String conversationLink = (String) entity.getProperty("conversation-link");
-					String userName = (String) entity.getProperty("username");
-					String userLink = (String) entity.getProperty("userlink");
-					Event event = new NewMessageEvent(userName, userLink, creationTime, eventType, conversationName, conversationLink);
-					events.add(event);
-				}
-			}catch (Exception e) {
-				// In a production environment, errors should be very rare. Errors which may
-				// occur include network errors, Datastore service errors, authorization errors,
-				// database entity definition mismatches, or service mismatches.
-				throw new PersistentDataStoreException(e);
-			}
-		}
-		return events;
-	}
+          Event event =
+              new NewConversationEvent(creationTime, eventType, conversationName, conversationLink);
+          events.add(event);
+        } else if (eventType.equals("register-event")) {
+          String userName = (String) entity.getProperty("username");
+          String userLink = (String) entity.getProperty("userlink");
+          Event event = new NewUserEvent(userName, userLink, creationTime, eventType);
+          events.add(event);
+        } else if (eventType.equals("message-event")) {
+          String conversationName = (String) entity.getProperty("conversation-name");
+          String conversationLink = (String) entity.getProperty("conversation-link");
+          String userName = (String) entity.getProperty("username");
+          String userLink = (String) entity.getProperty("userlink");
+          Event event =
+              new NewMessageEvent(
+                  userName, userLink, creationTime, eventType, conversationName, conversationLink);
+          events.add(event);
+        }
+      } catch (Exception e) {
+        // In a production environment, errors should be very rare. Errors which may
+        // occur include network errors, Datastore service errors, authorization errors,
+        // database entity definition mismatches, or service mismatches.
+        throw new PersistentDataStoreException(e);
+      }
+    }
+    return events;
+  }
 
   /**
    * Loads all Profile objects from the Datastore service and returns them in a List.
    *
-   * @throws PersistentDataStoreException if an error was detected during the load from the
-   *     Datastore service
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
+   *     during the load from the Datastore service
    */
   public List<Profile> loadProfiles() throws PersistentDataStoreException {
 
     List<Profile> profiles = new ArrayList<>();
 
     // Retrieve all profiles from the datastore.
-    Query query = new Query("abdo-chat-profiles").addSort("creation_time", Query.SortDirection.ASCENDING);
+    Query query =
+        new Query("abdo-chat-profiles").addSort("creation_time", Query.SortDirection.ASCENDING);
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
@@ -260,8 +265,8 @@ public class PersistentDataStore {
     userEntity.setProperty("password", user.getPassword());
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
     userEntity.setProperty("following", user.getFollowingUsersString());
-		userEntity.setProperty("email", user.getEmail());
-		userEntity.setProperty("logintype", user.getLoginType());
+    userEntity.setProperty("email", user.getEmail());
+    userEntity.setProperty("logintype", user.getLoginType());
     datastore.put(userEntity);
   }
 
@@ -285,41 +290,37 @@ public class PersistentDataStore {
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
     datastore.put(conversationEntity);
   }
-  
-  /** Writes an Event object to the DataStore service.*/
-	public void writeThrough(Event event) {
-		Entity eventEntity = new Entity("abdo-chat-events");
-		eventEntity.setProperty("creation_time", event.getTimeStamp().toString());
-		eventEntity.setProperty("event_type", event.getEventType().toString());
 
-		if (event.getEventType().equals("login-event")){
-			LoginLogoutEvent tempEvent = (LoginLogoutEvent) event;
-			eventEntity.setProperty("username", tempEvent.getUserName().toString());
-			eventEntity.setProperty("inOrOut", tempEvent.isInOrOut());
-			eventEntity.setProperty("userlink", tempEvent.getUserLink().toString());
-		}
-		else if (event.getEventType().equals("conversation-event")) {
-			NewConversationEvent tempEvent = (NewConversationEvent) event;
-			eventEntity.setProperty("conversation-name", tempEvent.getConversationName().toString());
-			eventEntity.setProperty("conversation-link", tempEvent.getConversationLink().toString());
-		}
-		else if (event.getEventType().equals("register-event")) {
-			NewUserEvent tempEvent = (NewUserEvent) event;
-			eventEntity.setProperty("username", tempEvent.getUserName().toString());
-			eventEntity.setProperty("userlink", tempEvent.getUserLink().toString());
-		}
-		else if (event.getEventType().equals("message-event")) {
-			NewMessageEvent tempEvent = (NewMessageEvent) event;
-			eventEntity.setProperty("username", tempEvent.getUserName().toString());
-			eventEntity.setProperty("userlink", tempEvent.getUserLink().toString());
-			eventEntity.setProperty("conversation-name", tempEvent.getConversationName().toString());
-			eventEntity.setProperty("conversation-link", tempEvent.getConversationLink().toString());
-		}
-		datastore.put(eventEntity);
-	}
+  /** Writes an Event object to the DataStore service. */
+  public void writeThrough(Event event) {
+    Entity eventEntity = new Entity("abdo-chat-events");
+    eventEntity.setProperty("creation_time", event.getTimeStamp().toString());
+    eventEntity.setProperty("event_type", event.getEventType().toString());
 
+    if (event.getEventType().equals("login-event")) {
+      LoginLogoutEvent tempEvent = (LoginLogoutEvent) event;
+      eventEntity.setProperty("username", tempEvent.getUserName().toString());
+      eventEntity.setProperty("inOrOut", tempEvent.isInOrOut());
+      eventEntity.setProperty("userlink", tempEvent.getUserLink().toString());
+    } else if (event.getEventType().equals("conversation-event")) {
+      NewConversationEvent tempEvent = (NewConversationEvent) event;
+      eventEntity.setProperty("conversation-name", tempEvent.getConversationName().toString());
+      eventEntity.setProperty("conversation-link", tempEvent.getConversationLink().toString());
+    } else if (event.getEventType().equals("register-event")) {
+      NewUserEvent tempEvent = (NewUserEvent) event;
+      eventEntity.setProperty("username", tempEvent.getUserName().toString());
+      eventEntity.setProperty("userlink", tempEvent.getUserLink().toString());
+    } else if (event.getEventType().equals("message-event")) {
+      NewMessageEvent tempEvent = (NewMessageEvent) event;
+      eventEntity.setProperty("username", tempEvent.getUserName().toString());
+      eventEntity.setProperty("userlink", tempEvent.getUserLink().toString());
+      eventEntity.setProperty("conversation-name", tempEvent.getConversationName().toString());
+      eventEntity.setProperty("conversation-link", tempEvent.getConversationLink().toString());
+    }
+    datastore.put(eventEntity);
+  }
 
-	/** Write a Profile object to the Datastore service. */
+  /** Write a Profile object to the Datastore service. */
   public void writeThrough(Profile profile) {
     // Delete profile in entity if already present
     Filter idFilter = new FilterPredicate("uuid", FilterOperator.EQUAL, profile.getId().toString());

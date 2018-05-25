@@ -46,7 +46,15 @@ public class PersistentStorageAgentTest {
 
   @Test
   public void testWriteThroughUser() {
-    User user = new User(UUID.randomUUID(), "test_username","password", Instant.now(), "", "", User.LoginType.Register);
+    User user =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "password",
+            Instant.now(),
+            "",
+            "",
+            User.LoginType.Register);
     persistentStorageAgent.writeThrough(user);
     Mockito.verify(mockPersistentDataStore).writeThrough(user);
   }

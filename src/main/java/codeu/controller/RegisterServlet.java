@@ -1,23 +1,23 @@
 package codeu.controller;
 
-import codeu.model.store.basic.EventStore;
-import codeu.model.store.basic.ProfileStore;
-import codeu.model.store.basic.UserStore;
 import codeu.model.data.Event;
 import codeu.model.data.NewUserEvent;
 import codeu.model.data.Profile;
 import codeu.model.data.User;
-import org.mindrot.jbcrypt.BCrypt;
+import codeu.model.store.basic.EventStore;
+import codeu.model.store.basic.ProfileStore;
+import codeu.model.store.basic.UserStore;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.time.Instant;
 import java.util.UUID;
-import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
-import java.io.File;
+import org.mindrot.jbcrypt.BCrypt;
 
 /** Servlet class responsible for user registration. */
 public class RegisterServlet extends HttpServlet {
@@ -26,7 +26,7 @@ public class RegisterServlet extends HttpServlet {
   private UserStore userStore;
 
   private ProfileStore profileStore;
-  
+
   private EventStore eventStore;
 
   /**
@@ -39,7 +39,6 @@ public class RegisterServlet extends HttpServlet {
     setUserStore(UserStore.getInstance());
     setProfileStore(ProfileStore.getInstance());
     setEventStore(EventStore.getInstance());
-
   }
 
   /**
@@ -49,14 +48,14 @@ public class RegisterServlet extends HttpServlet {
   void setUserStore(UserStore userStore) {
     this.userStore = userStore;
   }
-  
+
   /**
-   * Sets the EventStore used by this Servlet. This function provides a common setup method
-   * for use by the test framework or the servlet's init() function.
+   * Sets the EventStore used by this Servlet. This function provides a common setup method for use
+   * by the test framework or the servlet's init() function.
    */
- void setEventStore(EventStore eventStore) {
-  this.eventStore = eventStore;
- }
+  void setEventStore(EventStore eventStore) {
+    this.eventStore = eventStore;
+  }
 
   /**
    * Sets the ProfileStore used by this servlet. This function provides a common setup method for
@@ -93,7 +92,15 @@ public class RegisterServlet extends HttpServlet {
     }
 
     /** Adds user to the userStore database. */
-    User user = new User(UUID.randomUUID(), username, passwordHash, Instant.now(), "", "", User.LoginType.Register);
+    User user =
+        new User(
+            UUID.randomUUID(),
+            username,
+            passwordHash,
+            Instant.now(),
+            "",
+            "",
+            User.LoginType.Register);
     userStore.addUser(user);
 
     /** Adds profile to the profileStore database. Then redirects the user to page. */

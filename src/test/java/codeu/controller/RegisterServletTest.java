@@ -22,10 +22,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.Mockito;
 
 public class RegisterServletTest {
@@ -36,29 +34,28 @@ public class RegisterServletTest {
   private RequestDispatcher mockRequestDispatcher;
 
   @Before
-  /**
-   * creates new registerservlet object and then creates mock objects
-   */
+  /** creates new registerservlet object and then creates mock objects */
   public void setup() throws IOException {
     registerServlet = new RegisterServlet();
     mockRequest = Mockito.mock(HttpServletRequest.class);
     mockResponse = Mockito.mock(HttpServletResponse.class);
     mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
-    Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/register.jsp")).thenReturn(mockRequestDispatcher);
+    Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/register.jsp"))
+        .thenReturn(mockRequestDispatcher);
   }
 
   @Test
   /**
-   * Prints a test message to verify whether or not the registerServlet is receiving
-   * the valid responses and requests
+   * Prints a test message to verify whether or not the registerServlet is receiving the valid
+   * responses and requests
    */
   public void testDoGet() throws IOException, ServletException {
     registerServlet.doGet(mockRequest, mockResponse);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
   /**
-   * Prints a test message whenever the username that is being entered into the registration
-   * page contains invalid characters.
+   * Prints a test message whenever the username that is being entered into the registration page
+   * contains invalid characters.
    */
   @Test
   public void testDoPost_BadUsername() throws IOException, ServletException {
@@ -71,8 +68,8 @@ public class RegisterServletTest {
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
   /**
-   * Prints test message whenever the user attempts to register with a username that
-   * is already being used.
+   * Prints test message whenever the user attempts to register with a username that is already
+   * being used.
    */
   @Test
   public void testDoPost_ExistingUser() throws IOException, ServletException {
@@ -91,7 +88,6 @@ public class RegisterServletTest {
     Mockito.verify(mockUserStore, Mockito.never()).addUser(Mockito.any(User.class));
 
     Mockito.verify(mockRequest).setAttribute("error", "That username is already taken.");
-    Mockito.verify(mockRequestDispatcher).forward(mockRequest,mockResponse);
-
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
 }

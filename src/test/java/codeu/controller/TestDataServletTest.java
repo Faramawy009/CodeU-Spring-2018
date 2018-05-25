@@ -14,8 +14,8 @@
 
 package codeu.controller;
 
-import codeu.model.store.basic.EventStore;
 import codeu.model.store.basic.ConversationStore;
+import codeu.model.store.basic.EventStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
@@ -64,7 +64,6 @@ public class TestDataServletTest {
 
     mockEventStore = Mockito.mock(EventStore.class);
     testDataServlet.setEventStore(mockEventStore);
-
   }
 
   @Test

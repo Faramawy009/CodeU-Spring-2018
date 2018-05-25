@@ -32,17 +32,22 @@ public class User {
   private final String email;
   private final LoginType loginType;
 
-
   /**
    * Constructs a new User.
    *
-   * @param id       the ID of this User
-   * @param name     the username of this User
+   * @param id the ID of this User
+   * @param name the username of this User
    * @param password the password of this User
    * @param creation the creation time of this User
    */
-
-  public User(UUID id, String name, String password, Instant creation, String followingString, String email, LoginType loginType) {
+  public User(
+      UUID id,
+      String name,
+      String password,
+      Instant creation,
+      String followingString,
+      String email,
+      LoginType loginType) {
     this.id = id;
     this.name = name;
     this.password = password;
@@ -53,35 +58,27 @@ public class User {
     this.loginType = loginType;
   }
 
-  /**
-   * Returns the ID of this User.
-   */
+  /** Returns the ID of this User. */
   public UUID getId() {
     return id;
   }
 
-  /**
-   * Returns the username of this User.
-   */
+  /** Returns the username of this User. */
   public String getName() {
     return name;
   }
 
-  /**
-   * Returns the creation time of this User.
-   */
+  /** Returns the creation time of this User. */
   public Instant getCreationTime() {
     return creation;
   }
 
-  /**
-   * Resets the password of this User.
-   */
-  public void setPassword(String password) { this.password = password; }
+  /** Resets the password of this User. */
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-  /**
-   * Returns the password of this User.
-   */
+  /** Returns the password of this User. */
   public String getPassword() {
     return password;
   }
@@ -90,9 +87,9 @@ public class User {
     return following;
   }
 
-  public String getFollowingUsersString () {
+  public String getFollowingUsersString() {
     StringJoiner sj = new StringJoiner(",");
-    for(String s: following) {
+    for (String s : following) {
       sj.add(s);
     }
     return sj.toString();
@@ -102,12 +99,11 @@ public class User {
     this.following = following;
   }
 
-  public String getLoginType(){
+  public String getLoginType() {
     return this.loginType.toString();
   }
 
   public String getEmail() {
     return this.email;
   }
-
 }

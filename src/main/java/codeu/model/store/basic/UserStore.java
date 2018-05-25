@@ -85,16 +85,11 @@ public class UserStore {
     return null;
   }
 
-
-  /**
-   * @return the users that the requesting user is following
-   */
+  /** @return the users that the requesting user is following */
   public List<String> getFollowing(String username) {
     User user = getUser(username);
-    if(user.getFollowingUsersString().equals(""))
-      return new ArrayList<>();
-    else
-      return Arrays.asList(user.getFollowingUsersString().split(","));
+    if (user.getFollowingUsersString().equals("")) return new ArrayList<>();
+    else return Arrays.asList(user.getFollowingUsersString().split(","));
   }
 
   /**
@@ -112,7 +107,7 @@ public class UserStore {
   }
 
   /**
-   *  Access the User object with the given email
+   * Access the User object with the given email
    *
    * @return null if email does not match any existing User.
    */
@@ -129,14 +124,14 @@ public class UserStore {
   /** Add a new user to the current set of users known to the application. */
   public void addUser(User user) {
     boolean userExists = false;
-    for(User u: users) {
-      if(u.getId().toString().equals(user.getId().toString())) {
+    for (User u : users) {
+      if (u.getId().toString().equals(user.getId().toString())) {
         u.setFollowing(user.getFollowing());
         userExists = true;
         break;
       }
     }
-    if(!userExists) {
+    if (!userExists) {
       users.add(user);
     }
     persistentStorageAgent.writeThrough(user);

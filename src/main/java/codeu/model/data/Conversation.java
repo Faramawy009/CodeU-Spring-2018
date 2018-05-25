@@ -15,10 +15,9 @@
 package codeu.model.data;
 
 import java.time.Instant;
-import java.util.UUID;
-import java.util.List;
 import java.util.ArrayList;
-import codeu.model.data.User;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Class representing a conversation, which can be thought of as a chat room. Conversations are
@@ -46,6 +45,7 @@ public class Conversation {
     this.title = title;
     // sets isPrivate to default false
   }
+
   public Conversation(UUID id, UUID owner, String title, Instant creation, List<User> isVisibleTo) {
     this.id = id;
     this.owner = owner;
@@ -75,7 +75,7 @@ public class Conversation {
   }
 
   /** Returns the List of users following the conversation. */
-  public List<User> getFollowedUsers(){
+  public List<User> getFollowedUsers() {
     return isVisibleTo;
   }
 }

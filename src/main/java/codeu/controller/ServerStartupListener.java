@@ -5,8 +5,8 @@ import codeu.model.data.Event;
 import codeu.model.data.Message;
 import codeu.model.data.Profile;
 import codeu.model.data.User;
-import codeu.model.store.basic.EventStore;
 import codeu.model.store.basic.ConversationStore;
+import codeu.model.store.basic.EventStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.ProfileStore;
 import codeu.model.store.basic.UserStore;
@@ -37,7 +37,7 @@ public class ServerStartupListener implements ServletContextListener {
 
       List<Event> events = PersistentStorageAgent.getInstance().loadEvents();
       EventStore.getInstance().setEvents(events);
-      
+
       List<Profile> profiles = PersistentStorageAgent.getInstance().loadProfiles();
       ProfileStore.getInstance().setProfiles(profiles);
 

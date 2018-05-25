@@ -27,103 +27,106 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet class responsible for the conversations page. */
 public class FollowingServlet extends HttpServlet {
 
-    /** Store class that gives access to Users. */
-    private UserStore userStore;
+  /** Store class that gives access to Users. */
+  private UserStore userStore;
 
+  /**
+   * Set up state for handling conversation-related requests. This method is only called when
+   * running in a server, not when running in a test.
+   */
+  @Override
+  public void init() throws ServletException {
+    super.init();
+    setUserStore(UserStore.getInstance());
+  }
 
-    /**
-     * Set up state for handling conversation-related requests. This method is only called when
-     * running in a server, not when running in a test.
-     */
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        setUserStore(UserStore.getInstance());
+  /**
+   * Sets the UserStore used by this servlet. This function provides a common setup method for use
+   * by the test framework or the servlet's init() function.
+   */
+  void setUserStore(UserStore userStore) {
+    this.userStore = userStore;
+  }
+
+  /**
+   * This function fires when a user navigates to the following page. It gets all of the users that
+   * this user follows from the model and forwards to following.jsp for rendering the list.
+   */
+  @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws IOException, ServletException {
+    String username = (String) request.getSession().getAttribute("user");
+    List<String> following = new ArrayList<>();
+    if (username != null && !username.isEmpty()) following = userStore.getFollowing(username);
+    request.setAttribute("following", following);
+    request.getRequestDispatcher("/WEB-INF/view/following.jsp").forward(request, response);
+  }
+
+  /**
+   * This function fires when a user submits the form on the following page. It gets the logged-in
+   * username from the session and the user to follow from the submitted form data. It uses this to
+   * edit the following user in the model.
+   */
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws IOException, ServletException {
+    String username = (String) request.getSession().getAttribute("user");
+    List<String> following = new ArrayList<>();
+    if (username != null && !username.isEmpty()) {
+      following = userStore.getFollowing(username);
+    }
+    request.setAttribute("following", following);
+
+    if (username == null) {
+      // user is not logged in, don't let them follow anybody
+      response.sendRedirect("/login");
+      return;
     }
 
-    /**
-     * Sets the UserStore used by this servlet. This function provides a common setup method for use
-     * by the test framework or the servlet's init() function.
-     */
-    void setUserStore(UserStore userStore) {
-        this.userStore = userStore;
+    User user = userStore.getUser(username);
+    if (user == null) {
+      // user was not found, don't let them follow anybody
+      response.sendRedirect("/login");
+      return;
     }
 
-
-    /**
-     * This function fires when a user navigates to the following page. It gets all of the
-     * users that this user follows from the model and forwards to following.jsp for
-     * rendering the list.
-     */
-    @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
-        String username = (String) request.getSession().getAttribute("user");
-        List<String> following = new ArrayList<>();
-        if(username!=null && !username.isEmpty())
-            following = userStore.getFollowing(username);
-        request.setAttribute("following", following);
-        request.getRequestDispatcher("/WEB-INF/view/following.jsp").forward(request, response);
+    String followUser = request.getParameter("followUserName");
+    if (!userStore.isUserRegistered(followUser)) {
+      // if the target user is not registered, send error message
+      request.setAttribute("error", "That username was not found.");
+      request.getRequestDispatcher("/WEB-INF/view/following.jsp").forward(request, response);
+      return;
     }
 
-    /**
-     * This function fires when a user submits the form on the following page. It gets the
-     * logged-in username from the session and the user to follow from the submitted form
-     * data. It uses this to edit the following user in the model.
-     */
-    @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
-    	String username = (String) request.getSession().getAttribute("user");
-			List<String> following = new ArrayList<>();
-			if(username!=null && !username.isEmpty()) {
-				following = userStore.getFollowing(username);
-			}
-			request.setAttribute("following", following);
-
-			if (username == null) {
-				// user is not logged in, don't let them follow anybody
-				response.sendRedirect("/login");
-				return;
-			}
-
-			User user = userStore.getUser(username);
-			if (user == null) {
-				// user was not found, don't let them follow anybody
-				response.sendRedirect("/login");
-				return;
-			}
-
-			String followUser = request.getParameter("followUserName");
-      if(!userStore.isUserRegistered(followUser)) {
-        //if the target user is not registered, send error message
-				request.setAttribute("error", "That username was not found.");
-				request.getRequestDispatcher("/WEB-INF/view/following.jsp").forward(request, response);
-				return;
-      }
-
-			if(following.contains(followUser)) {
-				//if the target user is already followed, send error message
-				request.setAttribute("error", "User already followed.");
-				request.getRequestDispatcher("/WEB-INF/view/following.jsp").forward(request, response);
-				return;
-			}
-
-			String newFollowingList;
-      if(user.getFollowingUsersString().equals("") || user.getFollowingUsersString() == null) {
-				newFollowingList = followUser;
-			}
-			else {
-      	newFollowingList = user.getFollowingUsersString() + "," + followUser;
-      }
-      User.LoginType loginType = null;
-			try {
-				loginType = User.LoginType.valueOf(user.getLoginType());
-			} catch (Exception e) {
-				request.setAttribute("error", "Not a valid login method");
-			}
-      User newUser = new User(user.getId(), user.getName(), user.getPassword(), user.getCreationTime(), newFollowingList, user.getEmail(), loginType);
-      userStore.addUser(newUser);
-      response.sendRedirect("/following");
+    if (following.contains(followUser)) {
+      // if the target user is already followed, send error message
+      request.setAttribute("error", "User already followed.");
+      request.getRequestDispatcher("/WEB-INF/view/following.jsp").forward(request, response);
+      return;
     }
+
+    String newFollowingList;
+    if (user.getFollowingUsersString().equals("") || user.getFollowingUsersString() == null) {
+      newFollowingList = followUser;
+    } else {
+      newFollowingList = user.getFollowingUsersString() + "," + followUser;
+    }
+    User.LoginType loginType = null;
+    try {
+      loginType = User.LoginType.valueOf(user.getLoginType());
+    } catch (Exception e) {
+      request.setAttribute("error", "Not a valid login method");
+    }
+    User newUser =
+        new User(
+            user.getId(),
+            user.getName(),
+            user.getPassword(),
+            user.getCreationTime(),
+            newFollowingList,
+            user.getEmail(),
+            loginType);
+    userStore.addUser(newUser);
+    response.sendRedirect("/following");
+  }
 }

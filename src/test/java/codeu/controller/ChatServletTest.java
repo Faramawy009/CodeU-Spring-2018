@@ -17,11 +17,10 @@ package codeu.controller;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
-import codeu.model.data.Event;
 import codeu.model.store.basic.ConversationStore;
+import codeu.model.store.basic.EventStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
-import codeu.model.store.basic.EventStore;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -141,7 +140,15 @@ public class ChatServletTest {
     Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
     Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
 
-    User fakeUser = new User(UUID.randomUUID(), "test_username", "password", Instant.now(), "", "", User.LoginType.Register);
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "password",
+            Instant.now(),
+            "",
+            "",
+            User.LoginType.Register);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
@@ -158,7 +165,15 @@ public class ChatServletTest {
     Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
     Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
 
-    User fakeUser = new User(UUID.randomUUID(), "test_username", "password", Instant.now(), "", "", User.LoginType.Register);
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "password",
+            Instant.now(),
+            "",
+            "",
+            User.LoginType.Register);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -182,7 +197,15 @@ public class ChatServletTest {
     Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
     Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
 
-    User fakeUser = new User(UUID.randomUUID(), "test_username", "password", Instant.now(), "", "", User.LoginType.Register);
+    User fakeUser =
+        new User(
+            UUID.randomUUID(),
+            "test_username",
+            "password",
+            Instant.now(),
+            "",
+            "",
+            User.LoginType.Register);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
