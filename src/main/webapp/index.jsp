@@ -16,13 +16,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CodeU Team 5 Chat App</title>
-  <link rel="stylesheet" href="/css/main.css">
+  <title>Team 5 Abdo Chat App</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/main.css" type="text/css">
 </head>
 <body>
 
   <nav>
-    <a id="navTitle" href="/">CodeU Chat App</a>
+    <a id="navTitle" href="/">Abdo Chat App</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
     <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
     <a href="/user/<%= request.getSession().getAttribute("user") %>">Profile</a>
@@ -43,7 +44,7 @@
     <div
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
 
-      <h1>CodeU Team 5 / Five Guys Chat App</h1>
+      <h1>CodeU Team 5 / Abdo Chat App</h1>
       <h2>Welcome!</h2>
 
       <ul>
@@ -54,7 +55,7 @@
             project as well as its team members.</li>
         <li>You can <a href="/testdata">load test data</a> to fill the site with
             example data.</li>
-        <li>You can see exactly what new activities everyone's been up to by visiting our <a href="/activityfeed">Activity Feed</a> page.</li>
+        <li>You can see exactly what new activities everyone's been up to by visiting the <a href="/activityfeed">Activity Feed</a> page.</li>
 
       </ul>
     </div>

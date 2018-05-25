@@ -17,12 +17,13 @@
 <html>
 <head>
   <title>CodeU Chat App</title>
-  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/main.css" type="text/css">
 </head>
 <body>
 
 <nav>
-  <a id="navTitle" href="/">CodeU Chat App</a>
+  <a id="navTitle" href="/">Abdo Chat App</a>
   <% if(request.getSession().getAttribute("user") != null){ %>
   <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
   <a href="/user/<%= request.getSession().getAttribute("user") %>">Profile</a>
@@ -43,20 +44,19 @@
     <div
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
 
-      <h1>About Our CodeU Chat App</h1>
+      <h1>About Me</h1>
       <p>
-        We are Team 5 - Five Guys! Our team members are:
+        Hey there!
+        I am Abdo Elfaramawy, a Senior at University of Minnesota Twin Cities. <br><br>
+        If you like to see more of my projects, please checkout out my <a href="//github.com/Faramawy009">github</a> or <a href="//linkedin.com/in/Faramawy009">linkedin</a>. <br><br>
+
+        Contact Information: <br>
+        Phone: (+1) 612 666 2116 <br>
+        Email: abduelfaramawy@gmail.com <br>
       </p>
 
-      <ul>
-        <li>Sophia Jefferson</li>
-        <li>Abdo Elfaramawy</li>
-        <li>Jenna Oratz</li>
-        <li>Chuong Vu</li>
-      </ul>
-
       <p>
-        Features and improvements coming soon!
+        Please reach out if you would like to see any more features!
       </p>
     </div>
   </div>
